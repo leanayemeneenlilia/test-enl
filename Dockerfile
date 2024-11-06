@@ -1,5 +1,5 @@
-# Étape de build
-FROM node:18 AS build
+# Étape unique : Serveur de développement pour l'application React
+FROM node:18
 
 # Définir le répertoire de travail
 WORKDIR /app
@@ -10,20 +10,12 @@ COPY package*.json ./
 # Installer les dépendances
 RUN npm install
 
-# Copier le code de l'application
+# Copier tout le code de l'application dans le conteneur
 COPY . .
 
-# Créer un build optimisé
-RUN npm run build
+# Exposer le port 3000 (port par défaut du serveur de développement React)
+EXPOSE 3000
 
-# Étape de production : Serveur Nginx
-FROM nginx:alpine
+# Lancer le serveur de développement avec rechargement à chaud
+CMD ["npm", "start"]
 
-# Copier les fichiers du build vers le dossier de contenu statique de Nginx
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Exposer le port 80
-EXPOSE 80
-
-# Démarrer Nginx (la commande par défaut dans l'image Nginx fait déjà cela)
-CMD ["nginx", "-g", "daemon off;"]
