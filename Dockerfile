@@ -1,20 +1,20 @@
-# Étape 1: Utiliser une image Node pour le développement
+# Étape unique : Serveur de développement pour l'application React
 FROM node:18
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier uniquement les fichiers de dépendances d'abord pour tirer parti du cache Docker
+# Copier package.json et package-lock.json
 COPY package*.json ./
 
 # Installer les dépendances
 RUN npm install
 
-# Copier tout le code de l'application
+# Copier tout le code de l'application dans le conteneur
 COPY . .
 
-# Exposer le port 3000 pour le serveur de développement React
+# Exposer le port 3000 (port par défaut du serveur de développement React)
 EXPOSE 3000
 
-# Démarrer l'application en mode développement avec rechargement à chaud
+# Lancer le serveur de développement avec rechargement à chaud
 CMD ["npm", "start"]
