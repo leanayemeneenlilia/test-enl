@@ -17,5 +17,6 @@ COPY . .
 EXPOSE 3000
 
 # Lancer le serveur de développement avec rechargement à chaud
+ENV NODE_ENV=development
 CMD ["npm", "start"]
 
