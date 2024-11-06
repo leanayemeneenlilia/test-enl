@@ -1,29 +1,20 @@
-# Étape 1: Construction de l'application React
-FROM node:18 AS build
+# Étape 1: Utiliser une image Node pour le développement
+FROM node:18
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier package.json et package-lock.json (si disponible)
+# Copier package.json et package-lock.json
 COPY package*.json ./
 
 # Installer les dépendances
 RUN npm install
 
-# Copier tout le code de l'application dans le conteneur
+# Copier tout le code de l'application
 COPY . .
 
-# Exécuter le build de l'application React
-RUN npm run build
+# Exposer le port 3000 pour le serveur de développement React
+EXPOSE 3000
 
-# Étape 2: Serveur pour l'application React
-FROM nginx:alpine
-
-# Copier les fichiers de build générés dans le répertoire Nginx
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Exposer le port 80 pour accéder à l'application
-EXPOSE 80
-
-# Démarrer Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Démarrer l'application en mode développement
+CMD ["npm", "start"]
